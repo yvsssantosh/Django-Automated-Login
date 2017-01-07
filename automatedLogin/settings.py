@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '9l%=_4=9p9^_zkk)ob2!g+num^kl1-di!6yiw81)eqol-l=nlb'
+SECRET_KEY = 'dy5y#6=j3ao1ed9cupchmxzv=_*^9*y-ko^qji5c1+ucp$nxm2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -25,10 +25,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sendMessage.apps.SendmessageConfig'
+    'sendmsg',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -36,9 +38,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'sendmsg.middleware.UserMiddleware',
 ]
 
-ROOT_URLCONF = 'proj.urls'
+ROOT_URLCONF = 'automatedLogin.urls'
 
 TEMPLATES = [
     {
@@ -57,7 +60,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'proj.wsgi.application'
+WSGI_APPLICATION = 'automatedLogin.wsgi.application'
 
 
 # Database
@@ -108,3 +111,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'sendmsg.CustomUser'
+
+# Authentication Backends
+
+AUTHENTICATION_BACKENDS = [
+    'sendmsg.backend.PhoneBackend',
+    'django.contrib.auth.backends.ModelBackend'
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}

@@ -1,1 +1,1 @@
-# Session Automation with Django using MiddleWare
+automatedLogin
